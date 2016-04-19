@@ -3,6 +3,7 @@ Docker Flink JobManager
 Yet another dockerized flink image. It's purpose is to have:
 - proper signal handling
 - docker friendly logging configurations (rolling file appenders, console)
+- a minimal footprint (thanks to alpine linux)
 - a simple runner without using supervisor, zookeeper, docker compose... just calling java directly (while all those things are still possible)
 - a convenient way to configure flink through an environment variable (```FLINK_CONF```)
 
