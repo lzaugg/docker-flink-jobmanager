@@ -1,5 +1,5 @@
 FROM alpine:3.3 
-MAINTAINER l.zaugg@mypi.ch
+MAINTAINER lzaugg
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && apk add --update \
@@ -19,14 +19,19 @@ RUN curl https://s3.eu-central-1.amazonaws.com/flink-1.0.1-akka-2.4.4/flink-1.0.
 ADD docker_flink-run.sh ${FLINK_HOME}/bin
 ADD conf/log4j-docker.properties ${FLINK_HOME}/conf
 ADD conf/logback-docker.xml ${FLINK_HOME}/conf
+ADD conf/flink-conf.yaml ${FLINK_HOME}/conf
 ADD docker_merge-yml-file.rb ${FLINK_HOME}/bin
 
-RUN mkdir -p /opt/flink/log
-VOLUME /opt/flink/log
+RUN mkdir -p /flink/log /flink/blob /flink/tmp
+VOLUME [ "/flink/log", "/flink/blob", "/flink/tmp"]
 
 USER root
 
 ENTRYPOINT [ "/opt/flink/bin/docker_flink-run.sh", "--configDir", "/opt/flink/conf/"]
 
 CMD ["--executionMode", "cluster"]
-EXPOSE 6123 8080 8081
+
+# 6123: jobmanager rpc
+# 6124: blobmanager
+# 8081: jobmanager web
+EXPOSE 6123 6124 8081

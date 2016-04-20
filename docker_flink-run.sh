@@ -33,6 +33,28 @@ if [ "${FLINK_CLASS_TO_RUN}x" = "x" ]; then
 	exit 1
 fi
 
+echo "" >> $FLINK_CONF_DIR/flink-conf.yaml
+
+
+
+if [ ! "${FLINK_JOBMANAGER_HOST_NAME}x" = "x" ]; then
+	echo "jobmanager.rpc.address: $FLINK_JOBMANAGER_HOST_NAME" >> $FLINK_CONF_DIR/flink-conf.yaml
+fi
+
+if [ ! "${FLINK_ADVERTISED_PORT}x" = "x" ]; then
+	echo "akka.remote.netty.tcp.port: $FLINK_ADVERTISED_PORT" >> $FLINK_CONF_DIR/flink-conf.yaml
+fi
+
+if [ ! "${FLINK_ADVERTISED_HOST_NAME}x" = "x" ]; then
+	FLINK_ADVERTISED_IP=$(getent hosts $FLINK_ADVERTISED_HOST_NAME | awk '{ print $1 }')
+	if [ ! "$?" = "0" ]; then
+		echo "couldn't resolve FLINK_ADVERTISED_HOST_NAME propertly. Invalid hostname or malfunctioning DNS."
+		exit 1
+	fi
+
+	echo "akka.remote.netty.tcp.hostname: $FLINK_ADVERTISED_IP" >> $FLINK_CONF_DIR/flink-conf.yaml
+fi
+
 if [ ! "${FLINK_CONF}x" = "x" ]; then
 	echo "using custom FLINK_CONF: ${FLINK_CONF}"
 	cp $FLINK_CONF_DIR/flink-conf.yaml /tmp/flink-conf-orig.yaml
@@ -45,6 +67,12 @@ if [ ! "${FLINK_CONF}x" = "x" ]; then
 		cp /tmp/flink-conf.yaml $FLINK_CONF_DIR/flink-conf.yaml
 	fi
 fi
+echo "================================"
+echo "Flink configuration:"
+echo "================================"
+cat $FLINK_CONF_DIR/flink-conf.yaml
+echo ""
+echo "================================"
 
 CC_CLASSPATH=`constructFlinkClassPath`
 
