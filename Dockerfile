@@ -13,10 +13,8 @@ ENV FLINK_CLASS_TO_RUN org.apache.flink.runtime.jobmanager.JobManager
 ENV FLINK_HOME /opt/flink
 
 RUN mkdir -p /opt/
-#RUN curl http://www.mirrorservice.org/sites/ftp.apache.org/flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-${FLINK_HADOOP_VERSION}-${FLINK_SCALA_VERSION}.tgz  | tar -C /opt/ -xz | ln -s /opt/flink-${FLINK_VERSION}/ ${FLINK_HOME}
-COPY flink-${FLINK_VERSION} /opt/flink-${FLINK_VERSION}
-RUN ln -s /opt/flink-${FLINK_VERSION}/ ${FLINK_HOME}
-#RUN curl http://www.mirrorservice.org/sites/ftp.apache.org/flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-${FLINK_HADOOP_VERSION}-${FLINK_SCALA_VERSION}.tgz  | tar -C /opt/ -xz | ln -s /opt/flink-${FLINK_VERSION}/ ${FLINK_HOME}
+
+RUN curl https://s3.eu-central-1.amazonaws.com/flink-1.0.1-akka-2.4.4/flink-1.0.1_akka-2.4.4.tar.gz  | tar -C /opt/ -xz | ln -s /opt/flink-${FLINK_VERSION}/ ${FLINK_HOME}
 
 ADD docker_flink-run.sh ${FLINK_HOME}/bin
 ADD conf/log4j-docker.properties ${FLINK_HOME}/conf
