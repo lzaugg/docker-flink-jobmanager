@@ -37,10 +37,12 @@ if [ ! "${FLINK_CONF}x" = "x" ]; then
 	echo "using custom FLINK_CONF: ${FLINK_CONF}"
 	cp $FLINK_CONF_DIR/flink-conf.yaml /tmp/flink-conf-orig.yaml
 	echo "$FLINK_CONF" > /tmp/flink-conf-env.yaml
-	ruby $bin/docker_merge-yml-file.rb /tmp/flink-conf-orig.yaml /tmp/flink-conf-env.yaml > $FLINK_CONF_DIR/flink-conf.yaml
+	ruby $bin/docker_merge-yml-file.rb /tmp/flink-conf-orig.yaml /tmp/flink-conf-env.yaml > /tmp/flink-conf.yaml
 	if [ ! "$?" = "0" ]; then
 		echo "illegal FLINK_CONF env!"
 		exit 1
+	else
+		cp /tmp/flink-conf.yaml $FLINK_CONF_DIR/flink-conf.yaml
 	fi
 fi
 

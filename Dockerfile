@@ -25,7 +25,7 @@ VOLUME /opt/flink/log
 
 USER root
 
-ENTRYPOINT [ "/opt/flink/bin/docker_flink-run.sh" ]
+ENTRYPOINT [ "/opt/flink/bin/docker_flink-run.sh", "--configDir", "/opt/flink/conf/"]
 
-CMD ["--executionMode", "cluster", "--configDir", "/opt/flink/conf/"]
+CMD ["--executionMode", "cluster"]
 EXPOSE 6123 8080 8081
