@@ -10,4 +10,4 @@ second_file = ARGV[1]
 settings = YAML.load_file(first_file)
 settings2 = YAML.load_file(second_file)
 merged_settings=settings.merge(settings2)
-puts merged_settings.to_yaml[3...-1]
+puts merged_settings.to_yaml
