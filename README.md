@@ -2,7 +2,7 @@ Docker Flink JobManager
 ============================
 This repository holds yet another flink build definition for docker to run Apache [Flink] in containers. There exists a build definition for the Flink jobmanager and one for the Flink taskmanager. The motivation to create this build definition was to get Flink running in Docker with multiple docker containers distributed on different machines (e.g. AWS ElasticBeanstalk, AWS ECS, ..).
 
-JobManager and TaskManager are automatically builded and available on Docker registry:
+JobManager and TaskManager are automatically built and available on Docker registry:
 - [lzaugg/flink-jobmanager]
 - [lzaugg/flink-taskmanager]
 
@@ -33,11 +33,17 @@ The same idea is already documented in https://issues.apache.org/jira/browse/FLI
 
 Quick Start
 -------------
+
+### Example
+Example where the hostname of the JobManagers ist set to 192.168.99.100 (reachable from external system).
+
+**JobManager**
 ```
-$ # start jobmanager
 $ docker run -e FLINK_ADVERTISED_HOST_NAME=192.168.99.100 -p 6123:6123 -p 6124:6124 -p 8081:8081 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4-latest
-$ 
-$ # start taskmanager
+```
+
+**TaskManager**
+```
 $ docker run -e FLINK_JOBMANAGER_HOST_NAME=192.168.99.100 lzaugg/flink-taskmanager:1.0.1_akka-2.4.4-latest
 ```
 
@@ -56,7 +62,16 @@ The container exposes 3 volumes:
 
 Environment
 -------------
-Several environment variables are supported. The most important are:
+The most important env variable is:
+
+- **`FLINK_ADVERTISED_HOST_NAME`**
+    
+    **SHOULD BE SET for JobManager**. Hostname (or IP address) to be used to connect to this jobmanager from external (e.g. taskmanagers). It's the same as setting `FLINK_CONF` to `akka.remote.netty.tcp.hostname: <external-ip>`, just more comfortable. 
+
+Other supported environment variables:
+- `FLINK_ADVERTISED_PORT`
+
+  Port to be used to connect to this jobmanager from external. Default 6123.
 
 - `JVM_ARGS`
 
@@ -70,13 +85,11 @@ Several environment variables are supported. The most important are:
 
   Accepts any YAML string to configure Flink. Can be used to override flink-conf.yaml parameters. E.g. `{jobmanager.rpc.port: 6120}`. See Configuration section.
 
-- `FLINK_ADVERTISED_HOST_NAME`
+  
+- `FLINK_JOBMANAGER_HOST_NAME`
+    
+    **SHOULD BE SET for TaskManager**. Hostname (or IP address) to be used as connection endpoint for the JobManager. It's the same as setting `FLINK_CONF` to `jobmanager.rpc.address: <job-manager-ip>`, just more comfortable.
 
-  Hostname to be used to connect to this jobmanager from external (e.g. taskmanagers). It's just an easier way than setting `FLINK_CONF` to `akka.remote.netty.tcp.hostname: <external-ip>`. SHOULD BE SET.
-
-- FLINK_ADVERTISED_PORT
-
-  Port to be used to connect to this jobmanager from external. Default 6123.
 
 Configuration
 --------------
