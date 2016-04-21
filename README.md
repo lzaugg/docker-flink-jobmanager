@@ -25,17 +25,20 @@ https://github.com/lzaugg/flink/tree/1.0.1_akka-2.4.4 for changes.
 
 The same idea is already documented in https://issues.apache.org/jira/browse/FLINK-2821 (from another person), but I needed it now and for the stable 1.0.1 release of Flink. The configuration options of akka are described in http://doc.akka.io/docs/akka/snapshot/additional/faq.html.
 
-*ATTENTION*: no support for Hadoop yet (out of the box). Currently only s3 or filesystem is supported as state backend.
+**IMPORTANT**: 
+- this build defnition is a moving part as long as missing features are a no go for production use
+- there's no support for Hadoop/YARN yet (out of the box). Currently only s3 or filesystem is supported as state backend.
+- this README reflects the latest version (check for `-latest` prefix in docker image tags).
 
 
 Quick Start
 -------------
 ```
 $ # start jobmanager
-$ docker run -e FLINK_ADVERTISED_HOST_NAME=192.168.99.100 -p 6123:6123 -p 6124:6124 -p 8081:8081 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4
+$ docker run -e FLINK_ADVERTISED_HOST_NAME=192.168.99.100 -p 6123:6123 -p 6124:6124 -p 8081:8081 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4-latest
 $ 
 $ # start taskmanager
-$ docker run -e FLINK_JOBMANAGER_HOST_NAME=192.168.99.100 lzaugg/flink-taskmanager:1.0.1_akka-2.4.4
+$ docker run -e FLINK_JOBMANAGER_HOST_NAME=192.168.99.100 lzaugg/flink-taskmanager:1.0.1_akka-2.4.4-latest
 ```
 
 ### Docker Volumes
@@ -115,10 +118,10 @@ Just the most important configuration properties and their defaults. For a full 
 
 Examples
 -------------
-`run --rm -e "FLINK_CONF={jobmanager.rpc.port: 6001}" -e FLINK_ADVERTISED_HOST_NAME=192.168.1.201 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4`
+`run --rm -e "FLINK_CONF={jobmanager.rpc.port: 6001}" -e FLINK_ADVERTISED_HOST_NAME=192.168.1.201 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4-latest`
 
 
 [Flink]: https://flink.apache.org/
-[lzaugg/flink-jobmanager]: https://registry.hub.docker.com/u/lzaugg/flink-jobmanager
-[lzaugg/flink-taskmanager]: https://registry.hub.docker.com/u/lzaugg/flink-taskmanager
+[lzaugg/flink-jobmanager]: https://hub.docker.com/r/lzaugg/flink-jobmanager/
+[lzaugg/flink-taskmanager]: https://hub.docker.com/r/lzaugg/flink-taskmanager/
 
