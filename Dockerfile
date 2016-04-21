@@ -22,8 +22,8 @@ ADD conf/logback-docker.xml ${FLINK_HOME}/conf
 ADD conf/flink-conf.yaml ${FLINK_HOME}/conf
 ADD docker_merge-yml-file.rb ${FLINK_HOME}/bin
 
-RUN mkdir -p /flink/log /flink/blob /flink/tmp
-VOLUME [ "/flink/log", "/flink/blob", "/flink/tmp"]
+RUN mkdir -p /flink/log /flink/blob /flink/tmp /flink/state
+VOLUME [ "/flink/log", "/flink/blob", "/flink/tmp", "/flink/state"]
 
 USER root
 

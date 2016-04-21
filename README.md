@@ -10,15 +10,18 @@ The built docker image has (more or less):
 - a convenient way to configure flink through environment variables (`FLINK_CONF`,..)
 - patched version of Flink 1.0.1 with akka 2.4.4 to support NATed netty with bind hostname and exposed hostname (check tag of docker image!)
 
+
 Warning / Flink Patching
 -------------
 This docker image is provided "AS IS", without warranty of any kind. To be able to use Flink with a more docker friendly setup in a NATed environment (e.g. AWS ECS), the following was necessary :
 - expose additional akka configuration properties through the Flink configuration mechanism
 - update akka version from 2.3.x to 2.4.4 (and therefore only Scala 2.11 is supported)
 
-See https://github.com/lzaugg/flink.git#1.0.1_akka-2.4.4 for changes.
+https://github.com/lzaugg/flink/tree/1.0.1_akka-2.4.4 for changes.
 
 The same idea is already documented in https://issues.apache.org/jira/browse/FLINK-2821 (from another person), but I needed it now and for the stable 1.0.1 release of Flink. The configuration options of akka are described in http://doc.akka.io/docs/akka/snapshot/additional/faq.html.
+
+*ATTENTION*: no support for Hadoop yet (out of the box). Currently only s3 or filesystem is supported as state backend.
 
 
 Quick Start
@@ -31,14 +34,15 @@ $ # start taskmanager
 $ docker run -e FLINK_JOBMANAGER_HOST_NAME=192.168.99.100 lzaugg/flink-taskmanager:1.0.1_akka-2.4.4
 ```
 
-### Volumes
+### Docker Volumes
 The container exposes 3 volumes:
 
 - `/flink/logs`: logging
 - `/flink/tmp`: tmp directory for taskmanager
 - `/flink/blob`: blob directory for taskmanager
+- `/flink/state`: state directory for taskmanager
 
-### Ports and Linking
+### Docker Ports and Linking
 - `6123`: JobManager RPC port
 - `6124`: JobManager "BlobManager" port
 - `8081`: JobManager Web Frontend port
