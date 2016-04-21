@@ -27,8 +27,11 @@ The same idea is already documented in https://issues.apache.org/jira/browse/FLI
 
 **IMPORTANT**: 
 - this build defnition is a moving part as long as missing features are a no go for production use
-- there's no support for Hadoop/YARN yet (out of the box). Currently only s3 or filesystem is supported as state backend.
+- there's no support for Hadoop/YARN yet (out of the box).
 - this README reflects the latest version (check for `-latest` prefix in docker image tags).
+- not tested yet:
+  - HA mode with zookeeper (should work by tweaking settings via FLINK_CONF)
+  - shared/distributed filesystem as state backend (via host or other docker container)
 
 
 Quick Start
@@ -59,6 +62,7 @@ The container exposes 3 volumes:
 - `6123`: JobManager RPC port
 - `6124`: JobManager "BlobManager" port
 - `8081`: JobManager Web Frontend port
+
 
 Environment
 -------------
