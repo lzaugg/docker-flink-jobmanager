@@ -1,6 +1,10 @@
 Docker Flink JobManager
 ============================
-This repository holds yet another flink build definition for docker to run Flink in containers. There exists a build definition for the Flink jobmanager and one for the Flink taskmanager. The motivation to create this build definition was to get Flink running in Docker with multiple docker containers distributed on different machines (e.g. AWS ElasticBeanstalk, AWS ECS, ..).
+This repository holds yet another flink build definition for docker to run Apache [Flink] in containers. There exists a build definition for the Flink jobmanager and one for the Flink taskmanager. The motivation to create this build definition was to get Flink running in Docker with multiple docker containers distributed on different machines (e.g. AWS ElasticBeanstalk, AWS ECS, ..).
+
+JobManager and TaskManager are automatically builded and available on Docker registry:
+- [lzaugg/flink-jobmanager]
+- [lzaugg/flink-taskmanager]
 
 The built docker image has (more or less):
 - proper signal handling
@@ -112,4 +116,9 @@ Just the most important configuration properties and their defaults. For a full 
 Examples
 -------------
 `run --rm -e "FLINK_CONF={jobmanager.rpc.port: 6001}" -e FLINK_ADVERTISED_HOST_NAME=192.168.1.201 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4`
+
+
+[Flink]: https://flink.apache.org/
+[lzaugg/flink-jobmanager]: https://registry.hub.docker.com/u/lzaugg/flink-jobmanager
+[lzaugg/flink-taskmanager]: https://registry.hub.docker.com/u/lzaugg/flink-taskmanager
 
