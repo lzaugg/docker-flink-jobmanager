@@ -15,7 +15,7 @@ The built docker image has (more or less):
 - a minimal footprint (thanks to alpine linux)
 - a simple runner without using supervisor, zookeeper, docker compose... just calling java directly (while all those other things are still possible)
 - a convenient way to configure flink through environment variables (`FLINK_CONF`,..)
-- patched version of Flink 1.0.1 with akka 2.4.4 to support NATed netty with bind hostname and exposed hostname (check tag of docker image!)
+- patched version of Flink 1.1.1 with akka 2.4.9 to support NATed netty with bind hostname and exposed hostname (check tag of docker image!)
 
 
 Warning / Flink Patching
@@ -24,12 +24,12 @@ This docker image is provided "AS IS", without warranty of any kind. To be able 
 - expose additional akka configuration properties through the Flink configuration mechanism
 - update akka version from 2.3.x to 2.4.4 (and therefore only Scala 2.11 is supported)
 
-https://github.com/lzaugg/flink/tree/1.0.1_akka-2.4.4 for changes.
+https://github.com/lzaugg/flink/tree/1.1.1_akka-2.4.9 for changes.
 
-The same idea is already documented in https://issues.apache.org/jira/browse/FLINK-2821 (from another person), but I needed it now and for the stable 1.0.1 release of Flink. The configuration options of akka are described in http://doc.akka.io/docs/akka/snapshot/additional/faq.html.
+The same idea is already documented in https://issues.apache.org/jira/browse/FLINK-2821 (from another person), but I needed it now and for the stable 1.1.1 release of Flink. The configuration options of akka are described in http://doc.akka.io/docs/akka/snapshot/additional/faq.html.
 
 **IMPORTANT**: 
-- this build defnition is a moving part as long as missing features are a no go for production use
+- this build definition is a moving part as long as missing features are a no go for production use
 - there's no support for Hadoop/YARN yet (out of the box).
 - this README reflects the latest version (check for `-latest` prefix in docker image tags).
 - not tested yet:
@@ -45,12 +45,12 @@ Example where the hostname of the JobManagers ist set to 192.168.99.100 (reachab
 
 **JobManager**
 ```
-$ docker run -e FLINK_ADVERTISED_HOST_NAME=192.168.99.100 -p 6123:6123 -p 6124:6124 -p 8081:8081 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4-latest
+$ docker run -e FLINK_ADVERTISED_HOST_NAME=192.168.99.100 -p 6123:6123 -p 6124:6124 -p 8081:8081 lzaugg/flink-jobmanager:1.1.1_akka-2.4.9-latest
 ```
 
 **TaskManager**
 ```
-$ docker run -e FLINK_JOBMANAGER_HOST_NAME=192.168.99.100 lzaugg/flink-taskmanager:1.0.1_akka-2.4.4-latest
+$ docker run -e FLINK_JOBMANAGER_HOST_NAME=192.168.99.100 lzaugg/flink-taskmanager:1.1.1_akka-2.4.9-latest
 ```
 
 ### Docker Volumes
@@ -138,7 +138,7 @@ Just the most important configuration properties and their defaults. For a full 
 
 Examples
 -------------
-`run --rm -e "FLINK_CONF={jobmanager.rpc.port: 6001}" -e FLINK_ADVERTISED_HOST_NAME=192.168.1.201 lzaugg/flink-jobmanager:1.0.1_akka-2.4.4-latest`
+`run --rm -e "FLINK_CONF={jobmanager.rpc.port: 6001}" -e FLINK_ADVERTISED_HOST_NAME=192.168.1.201 lzaugg/flink-jobmanager:1.1.1_akka-2.4.9-latest`
 
 
 [Flink]: https://flink.apache.org/
