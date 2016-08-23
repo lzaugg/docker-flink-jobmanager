@@ -1,7 +1,10 @@
 Docker Flink JobManager
 ============================
-This repository holds yet another flink build definition for docker to run Apache [Flink] in containers. There exists a build definition for the Flink jobmanager and one for the Flink taskmanager. The motivation to create this build definition was to get Flink running in Docker with multiple docker containers distributed on different machines (e.g. AWS ElasticBeanstalk, AWS ECS, ..).
+Readme inspired by [ches/docker-kafka]:
+>   This build intends to provide an operator-friendly  **[Flink]**  deployment suitable for usage in a production Docker environment. It runs one service, no bundled ZooKeeper (for more convenient development, use Docker Compose!).
+>   
 
+There exists a build definition for the [Flink] jobmanager and one for the [Flink] taskmanager. The motivation to create this build definition was to get [Flink] running in Docker with multiple docker containers distributed on different machines (e.g. AWS ElasticBeanstalk, AWS ECS, ..).
 JobManager and TaskManager are automatically built and available on Docker registry:
 - [lzaugg/flink-jobmanager]
 - [lzaugg/flink-taskmanager]
@@ -92,7 +95,7 @@ Other supported environment variables:
   
 - `FLINK_JOBMANAGER_HOST_NAME`
     
-    **SHOULD BE SET for TaskManager**. Hostname (or IP address) to be used as connection endpoint for the JobManager. It's the same as setting `FLINK_CONF` to `jobmanager.rpc.address: <job-manager-ip>`, just more comfortable.
+    **SHOULD BE SET for TaskManager only**. Hostname (or IP address) to be used as connection endpoint for the JobManager. It's the same as setting `FLINK_CONF` to `jobmanager.rpc.address: <job-manager-ip>`, just more comfortable.
 
 
 Configuration
@@ -141,4 +144,4 @@ Examples
 [Flink]: https://flink.apache.org/
 [lzaugg/flink-jobmanager]: https://hub.docker.com/r/lzaugg/flink-jobmanager/
 [lzaugg/flink-taskmanager]: https://hub.docker.com/r/lzaugg/flink-taskmanager/
-
+[ches/docker-kafka]: https://github.com/ches/docker-kafka

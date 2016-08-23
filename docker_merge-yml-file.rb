@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 require 'yaml'
 
 if (ARGV.length != 2)
