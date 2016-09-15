@@ -15,11 +15,11 @@ RUN mkdir -p /opt/
 
 RUN curl https://s3.eu-central-1.amazonaws.com/flink-1.1.2-akka-2.4.9/flink-1.1.2_akka-2.4.9.tar.gz  | tar -C /opt/ -xz | ln -s /opt/flink-${FLINK_VERSION}/ ${FLINK_HOME}
 
-ADD docker_flink-run.sh ${FLINK_HOME}/bin
-ADD conf/log4j-docker.properties ${FLINK_HOME}/conf
-ADD conf/logback-docker.xml ${FLINK_HOME}/conf
-ADD conf/flink-conf.yaml ${FLINK_HOME}/conf
-ADD docker_merge-yml-file.rb ${FLINK_HOME}/bin
+ADD docker_flink-run.sh ${FLINK_HOME}/bin/
+ADD conf/log4j-docker.properties ${FLINK_HOME}/conf/
+ADD conf/logback-docker.xml ${FLINK_HOME}/conf/
+ADD conf/flink-conf.yaml ${FLINK_HOME}/conf/
+ADD docker_merge-yml-file.rb ${FLINK_HOME}/bin/
 
 RUN mkdir -p /flink/log /flink/blob /flink/tmp /flink/state
 VOLUME [ "/flink/log", "/flink/blob", "/flink/tmp", "/flink/state"]
