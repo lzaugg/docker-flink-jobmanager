@@ -10,6 +10,7 @@ JobManager and TaskManager are automatically built and available on Docker regis
 - [lzaugg/flink-taskmanager]
 
 The built docker image has (more or less):
+
 - proper signal handling
 - docker friendly logging configurations (rolling file appenders, console)
 - a minimal footprint (thanks to alpine linux)
@@ -20,7 +21,9 @@ The built docker image has (more or less):
 
 Warning / Flink Patching
 -------------
+
 This docker image is provided "AS IS", without warranty of any kind. To be able to use Flink with a more docker friendly setup in a NATed environment (e.g. AWS ECS), the following was necessary :
+
 - expose additional akka configuration properties through the Flink configuration mechanism
 - update akka version from 2.3.x to 2.4.4 (and therefore only Scala 2.11 is supported)
 
@@ -29,6 +32,7 @@ https://github.com/lzaugg/flink/tree/1.1.1_akka-2.4.9 for changes.
 The same idea is already documented in https://issues.apache.org/jira/browse/FLINK-2821 (from another person), but I needed it now and for the stable 1.1.1 release of Flink. The configuration options of akka are described in http://doc.akka.io/docs/akka/snapshot/additional/faq.html.
 
 **IMPORTANT**: 
+
 - this build definition is a moving part as long as missing features are a no go for production use
 - there's no support for Hadoop/YARN yet (out of the box).
 - this README reflects the latest version (check for `-latest` prefix in docker image tags).
@@ -76,6 +80,11 @@ The most important env variable is:
     **SHOULD BE SET for JobManager**. Hostname (or IP address) to be used to connect to this jobmanager from external (e.g. taskmanagers). It's the same as setting `FLINK_CONF` to `akka.remote.netty.tcp.hostname: <external-ip>`, just more comfortable. 
 
 Other supported environment variables:
+
+- `FLINK_STATE_URL`
+
+  If set the `state.backend` is set to `filesystem`and `state.backend.fs.checkpointdir` to `$ FLINK_STATE_URL`
+
 - `FLINK_ADVERTISED_PORT`
 
   Port to be used to connect to this jobmanager from external. Default 6123.

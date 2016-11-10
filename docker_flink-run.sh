@@ -55,6 +55,11 @@ if [ ! "${FLINK_ADVERTISED_HOST_NAME}x" = "x" ]; then
 	echo "akka.remote.netty.tcp.hostname: $FLINK_ADVERTISED_IP" >> $FLINK_CONF_DIR/flink-conf.yaml
 fi
 
+if [ ! "${FLINK_STATE_URL}x" = "x" ]; then
+	echo "state.backend: filesystem" >> $FLINK_CONF_DIR/flink-conf.yaml
+	echo "state.backend.fs.checkpointdir: $FLINK_STATE_URL" >> $FLINK_CONF_DIR/flink-conf.yaml
+fi
+
 if [ ! "${FLINK_CONF}x" = "x" ]; then
 	echo "using custom FLINK_CONF: ${FLINK_CONF}"
 	cp $FLINK_CONF_DIR/flink-conf.yaml /tmp/flink-conf-orig.yaml
@@ -83,6 +88,42 @@ log_setting=(-Dlog.file="$log" -Dlog4j.configuration=file:"$FLINK_CONF_DIR"/log4
 export FLINK_ROOT_DIR
 export FLINK_CONF_DIR
 
+# HADOOP
+HDFS_SITE_CONFIG_FILENAME=hdfs-site.xml
+CORE_SITE_CONFIG_FILENAME=core-site.xml
+HDFS_SITE_CONFIG_PATH=${HADOOP_CONF_DIR}/${HDFS_SITE_CONFIG_FILENAME}
+CORE_SITE_CONFIG_PATH=${HADOOP_CONF_DIR}/${CORE_SITE_CONFIG_FILENAME}
+
+if [ ! "${HADOOP_CORE_CONF}x" = "x" ]; then
+	echo "using custom HADOOP_CORE_CONF: ${HADOOP_CORE_CONF}"
+	if [ ! -r ${CORE_SITE_CONFIG_PATH}-orig ]; then
+		cp $CORE_SITE_CONFIG_PATH ${CORE_SITE_CONFIG_PATH}-orig
+	fi
+	
+	echo "$HADOOP_CORE_CONF" > /tmp/${CORE_SITE_CONFIG_FILENAME}-env
+	ruby $bin/docker_merge-xml-with-yaml.rb ${CORE_SITE_CONFIG_PATH}-orig /tmp/${CORE_SITE_CONFIG_FILENAME}-env > /tmp/${CORE_SITE_CONFIG_FILENAME}
+	if [ ! "$?" = "0" ]; then
+		echo "illegal HADOOP_CORE_CONF env!"
+		exit 1
+	else
+		cp /tmp/${CORE_SITE_CONFIG_FILENAME} $CORE_SITE_CONFIG_PATH
+	fi
+fi
+
+if [ ! "${HADOOP_HDFS_CONF}x" = "x" ]; then
+	echo "using custom HADOOP_HDFS_CONF: ${HADOOP_HDFS_CONF}"
+	if [ ! -f ${HDFS_SITE_CONFIG_PATH}-orig ]; then
+		cp $HDFS_SITE_CONFIG_PATH ${HDFS_SITE_CONFIG_PATH}-orig
+	fi
+	echo "$HADOOP_HDFS_CONF" > /tmp/${HDFS_SITE_CONFIG_FILENAME}-env
+	ruby $bin/docker_merge-xml-with-yaml.rb ${HDFS_SITE_CONFIG_PATH}-orig /tmp/${HDFS_SITE_CONFIG_FILENAME}-env > /tmp/${HDFS_SITE_CONFIG_FILENAME}
+	if [ ! "$?" = "0" ]; then
+		echo "illegal HADOOP_HDFS_CONF env!"
+		exit 1
+	else
+		cp /tmp/${HDFS_SITE_CONFIG_FILENAME} $HDFS_SITE_CONFIG_PATH
+	fi
+fi
 
 
 # Add HADOOP_CLASSPATH to allow the usage of Hadoop file systems

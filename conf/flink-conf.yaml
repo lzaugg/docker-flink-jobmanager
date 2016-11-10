@@ -12,3 +12,7 @@ env.log.dir: /flink/log
 blob.server.port: 6124
 blob.storage.directory: /flink/blob
 #taskmanager.tmp.dirs: /flink/tmp
+taskmanager.rpc.port: 6125
+taskmanager.data.port: 6126
+fs.hdfs.hadoopconf: /opt/flink/conf/hadoop
+state.backend: jobmanager
