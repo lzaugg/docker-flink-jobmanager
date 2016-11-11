@@ -1,12 +1,13 @@
 jobmanager.rpc.address: 0.0.0.0
 akka.remote.netty.tcp.bind-hostname: 0.0.0.0
 jobmanager.rpc.port: 6123
-jobmanager.heap.mb: 256
+jobmanager.heap.mb: 512
 akka.remote.netty.tcp.hostname: FLINK_ADVERTISED_HOST_NAME-not-configured
+recovery.jobmanager.port: 6127
 taskmanager.heap.mb: 512
-taskmanager.numberOfTaskSlots: 1
+taskmanager.numberOfTaskSlots: 2
 taskmanager.memory.preallocate: false
-parallelism.default: 1
+parallelism.default: 2
 jobmanager.web.port: 8081
 env.log.dir: /flink/log
 blob.server.port: 6124

@@ -49,5 +49,6 @@ CMD ["--executionMode", "cluster"]
 
 # 6123: jobmanager rpc
 # 6124: blobmanager
+# 6127: recovery
 # 8081: jobmanager web
-EXPOSE 6123 6124 8081
+EXPOSE 6123 6124 6127 8081
