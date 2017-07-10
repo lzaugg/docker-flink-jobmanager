@@ -2,7 +2,7 @@ FROM frolvlad/alpine-oraclejdk8:slim
 MAINTAINER lzaugg
 
 RUN apk add --update \
-    curl bash ruby procps \
+    curl bash ruby procps libstdc++ \
     && rm /var/cache/apk/*
 
 ENV FLINK_VERSION 1.1.3_akka-2.4.12
